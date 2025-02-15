@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "ES6",
+    "target": "es2015",
+    "declaration": true,
+    "outDir": "./dist",
+    "allowJs": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ]
+  },
+  "include": [
+    "src/**/*",
+  ]
+}

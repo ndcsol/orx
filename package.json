@@ -1,0 +1,39 @@
+{
+  "name": "@ndcsol/orx",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Front-end SDK for ORX API by NDC Solutions Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "playwright test",
+    "test:start": "vite  --config vite.config.ts",
+    "dev": "tsc -w",
+    "build": "tsc",
+    "lint": "eslint src --ext .js,.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.40.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "nodemon": "2.0.7",
+    "ts-node-dev": "1.1.6",
+    "typescript": "4.8.4",
+    "vite": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ndcsol/orx.git"
+  },
+  "author": "",
+  "license": "BUSL-1.1",
+  "bugs": {
+    "url": "https://github.com/ndcsol/orx/issues"
+  },
+  "homepage": "https://github.com/ndcsol/orx#readme"
+}
