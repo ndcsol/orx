@@ -17,7 +17,7 @@ jobs:
         run: npm install
       - name: Transpile TypeScript files
         run: npm run build
+      - name: Login to npm
+        run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > ~/.npmrc
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npm publish
