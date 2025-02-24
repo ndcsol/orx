@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,11 +21,7 @@ jobs:
         run: npm install
       - name: Transpile TypeScript files
         run: npm run build
-      - name: Install Playwright
-        run: npx playwright install
-      - name: Run tests
-        run: npm test
-      # - name: Publish to npm
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      #   run: npm publish
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: npm publish
