@@ -1,6 +1,6 @@
 {
   "name": "@ndcsol/orx",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "description": "Front-end SDK for ORX API by NDC Solutions Inc.",
   "main": "dist/index.js",
