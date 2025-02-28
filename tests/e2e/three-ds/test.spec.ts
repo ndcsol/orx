@@ -33,7 +33,6 @@ test.describe('Proper handling of the stripe modal', () => {
     const payload = urlEncodeNestedObject(threeDsPayload);
     await page.goto("http://localhost:5173/three-ds/?" + payload);
     await page.waitForSelector("body");
-    await page.waitForTimeout(1000);
     //Find the iframe whose name starts with __privateStripeFrame
     const stripeIframe = await page.waitForSelector("iframe[name^=__privateStripeFrame]");
     expect(stripeIframe).not.toBeNull();
