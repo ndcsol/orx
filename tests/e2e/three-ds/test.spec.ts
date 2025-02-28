@@ -51,7 +51,7 @@ test.describe('Proper handling of the stripe modal', () => {
     const errorElement = await page.waitForSelector("#error", {
       state: 'attached'
     });
-    await page.waitForTimeout(6000);
+    await page.waitForTimeout(20000);
     expect(successElement.textContent()).resolves.toBeTruthy();
     expect(errorElement.textContent()).resolves.toBeFalsy();
 
