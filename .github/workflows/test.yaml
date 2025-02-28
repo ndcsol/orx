@@ -6,7 +6,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: test
+    env: 
+      STRIPE_PUBLISHABLE: ${{ secrets.STRIPE_PUBLISHABLE }}
+      STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
