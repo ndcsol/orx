@@ -17,19 +17,20 @@ function urlEncodeNestedObject(obj: any, prefix = "") {
   return str.join("&");
 }
 
+test.describe.configure({
+  mode: 'parallel'
+});
+
 test.describe('Proper handling of the stripe modal', () => {
-
   let threeDsPayload;
-
-  test.beforeAll(async () => {
+  test.beforeEach(async () => {
     threeDsPayload = await createThreeDsRespnse();
   });
-
-  test.afterAll(async () => {
+  test.afterEach(async () => {
     await deleteThreeDsResponse(threeDsPayload);
   })
 
-  test("ORX SDK should render expected output", async ({ page }) => {
+  test("Stripe modal is triggered and confirmed successfully", async ({ page }) => {
     const payload = urlEncodeNestedObject(threeDsPayload);
     await page.goto("http://localhost:5173/three-ds/?" + payload);
     await page.waitForSelector("body");
@@ -52,7 +53,6 @@ test.describe('Proper handling of the stripe modal', () => {
       state: 'attached'
     })]);
 
-
     expect(await errorOrSuccessElement.getAttribute("id")).toBe("success");
 
     const threeDsResult = JSON.parse((await errorOrSuccessElement.textContent())!);
@@ -62,5 +62,32 @@ test.describe('Proper handling of the stripe modal', () => {
     expect(threeDsResult.payload.setupIntent.status).toBe("succeeded");
   });
 
+  test("Stripe modal is triggered and fails successfully", async ({ page }) => {
+    const payload = urlEncodeNestedObject(threeDsPayload);
+    await page.goto("http://localhost:5173/three-ds/?" + payload);
+    await page.waitForSelector("body");
+
+    const stripeIframe = await page.waitForSelector("iframe[name^=__privateStripeFrame]");
+    expect(stripeIframe).not.toBeNull();
+
+    const iframe = await stripeIframe!.contentFrame();
+    const iframeWithinIframe = await iframe?.waitForSelector("iframe");
+    const stripeIframeWithinIframe = await iframeWithinIframe?.contentFrame();
+    await page.waitForTimeout(2000);
+    const failButton = await stripeIframeWithinIframe?.waitForSelector("#test-source-fail-3ds", {
+      state: 'visible'
+    });
+    await failButton?.click();
+
+    const errorOrSuccessElement = await Promise.race([page.waitForSelector("#success", {
+      state: 'attached'
+    }), page.waitForSelector("#error", {
+      state: 'attached'
+    })]);
+    expect(await errorOrSuccessElement.getAttribute("id")).toBe("error");
+    const threeDsResult = JSON.parse((await errorOrSuccessElement.textContent())!);
+    expect(threeDsResult.gateway).toBe('stripe');
+    expect(threeDsResult.status).toBe("error");
+  });
 });
 
