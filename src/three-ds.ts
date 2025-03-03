@@ -1,8 +1,10 @@
 import { loadStripe } from '@stripe/stripe-js';
-import type { ThreeDsPayload } from './three-ds.type'
+import type { ThreeDsOptions, ThreeDsPayload } from './three-ds.type'
 
-export async function threeDs({ payload }: ThreeDsPayload) {
-  const instance = await loadStripe(payload.publishable_key);
+export async function threeDs({ payload }: ThreeDsPayload, options?: ThreeDsOptions) {
+  const instance = await loadStripe(payload.publishable_key, {
+    locale: options?.locale ?? 'auto'
+  });
 
   return instance
     .confirmCardSetup(payload.client_secret, {
@@ -13,19 +15,22 @@ export async function threeDs({ payload }: ThreeDsPayload) {
         result?.setupIntent?.status === 'requires_confirmation'
       ) {
         return {
-          gateway: 'Stripe',
+          gateway: 'stripe',
           payload: result,
           status: 'success'
         };
       } else {
         return {
-          gateway: 'Stripe',
-          status: 'error'
+          gateway: 'stripe',
+          status: 'error',
+          message: result.error!.message,
+          error: result.error
         };
       }
     })
-    .catch(() => ({
-      gateway: 'Stripe',
-      status: 'error'
+    .catch((error) => ({
+      gateway: 'stripe',
+      status: 'error',
+      error
     }));
 }
