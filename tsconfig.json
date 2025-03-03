@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "module": "ES6",
-    "target": "es2015",
+    "moduleResolution": "bundler",
+    "target": "ES2015",
     "declaration": true,
     "outDir": "./dist",
     "allowJs": true,

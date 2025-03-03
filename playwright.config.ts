@@ -1,4 +1,7 @@
+import dotenv from 'dotenv'
 import { defineConfig } from "@playwright/test";
+
+dotenv.config()
 
 export default defineConfig({
   webServer: {
