@@ -33,29 +33,29 @@ test.describe('Proper handling of the stripe modal', () => {
     const payload = urlEncodeNestedObject(threeDsPayload);
     await page.goto("http://localhost:5173/three-ds/?" + payload);
     await page.waitForSelector("body");
-    //Find the iframe whose name starts with __privateStripeFrame
+
     const stripeIframe = await page.waitForSelector("iframe[name^=__privateStripeFrame]");
     expect(stripeIframe).not.toBeNull();
 
     const iframe = await stripeIframe!.contentFrame();
     const iframeWithinIframe = await iframe?.waitForSelector("iframe");
     const stripeIframeWithinIframe = await iframeWithinIframe?.contentFrame();
+    await page.waitForTimeout(1000);
     const completeButton = await stripeIframeWithinIframe?.waitForSelector("#test-source-authorize-3ds", {
       state: 'visible'
     });
     await completeButton?.click();
-    //read the contents of the #success and #error elements
-    const successElement = await page.waitForSelector("#success", {
-      state: 'attached'
-    });
-    const errorElement = await page.waitForSelector("#error", {
-      state: 'attached'
-    });
-    await page.waitForTimeout(60000);
-    expect(successElement.textContent()).resolves.toBeTruthy();
-    expect(errorElement.textContent()).resolves.toBeFalsy();
 
-    const threeDsResult = JSON.parse((await successElement.textContent())!);
+    const errorOrSuccessElement = await Promise.race([page.waitForSelector("#success", {
+      state: 'attached'
+    }), page.waitForSelector("#error", {
+      state: 'attached'
+    })]);
+
+
+    expect(await errorOrSuccessElement.getAttribute("id")).toBe("success");
+
+    const threeDsResult = JSON.parse((await errorOrSuccessElement.textContent())!);
     expect(threeDsResult.payload.setupIntent.id).toBe(threeDsPayload.setupIntent.id);
 
     expect(threeDsResult.status).toBe("success");

@@ -25,11 +25,21 @@ function urlParamsToObject() {
   return queryParams;
 }
 
+function createResultElement(id) {
+  const element = document.createElement("pre");
+  element.id = id;
+  return element;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const threeDsPayload = urlParamsToObject();
   threeDs(threeDsPayload).then(results => {
-    document.getElementById("success").innerText = JSON.stringify(results, null, 2);
+    const successElement = createResultElement('success');
+    successElement.innerText = JSON.stringify(results, null, 2);
+    document.getElementsByTagName("body")[0].appendChild(successElement);
   }).catch((error) => {
-    document.getElementById("error").innerText = JSON.stringify(error, null, 2);
+    const errorElement = createResultElement('error');
+    errorElement.innerText = JSON.stringify(error, null, 2);
+    document.getElementsByTagName("body")[0].appendChild(errorElement);
   })
 });
