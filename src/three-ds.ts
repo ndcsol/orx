@@ -6,6 +6,14 @@ export async function threeDs({ payload }: ThreeDsPayload, options?: ThreeDsOpti
     locale: options?.locale ?? 'auto'
   });
 
+  if (!instance) {
+    return {
+      gateway: 'stripe',
+      status: 'error',
+      error: new Error('Failed to load Stripe.js')
+    }
+  }
+
   return instance
     .confirmCardSetup(payload.client_secret, {
       payment_method: payload.payment_method
