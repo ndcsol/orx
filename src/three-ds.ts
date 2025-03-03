@@ -13,19 +13,19 @@ export async function threeDs({ payload }: ThreeDsPayload) {
         result?.setupIntent?.status === 'requires_confirmation'
       ) {
         return {
-          gateway: 'Stripe',
+          gateway: 'stripe',
           payload: result,
           status: 'success'
         };
       } else {
         return {
-          gateway: 'Stripe',
+          gateway: 'stripe',
           status: 'error'
         };
       }
     })
     .catch(() => ({
-      gateway: 'Stripe',
+      gateway: 'stripe',
       status: 'error'
     }));
 }
