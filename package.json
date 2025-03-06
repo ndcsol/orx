@@ -36,7 +36,7 @@
     "url": "git+https://github.com/ndcsol/orx.git"
   },
   "author": "NDC Solutions Inc.",
-  "license": "BUSL-1.1",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ndcsol/orx/issues"
   },
