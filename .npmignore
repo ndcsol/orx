@@ -29,3 +29,4 @@ CHANGELOG.md
 .prettierrc
 vite.config.ts
 playwright.config.ts
+tests
