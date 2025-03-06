@@ -1,6 +1,6 @@
 {
   "name": "@ndcsol/orx",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": false,
   "type": "module",
   "description": "Front-end SDK for ORX API by NDC Solutions Inc.",
@@ -36,7 +36,7 @@
     "url": "git+https://github.com/ndcsol/orx.git"
   },
   "author": "NDC Solutions Inc.",
-  "license": "BUSL-1.1",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ndcsol/orx/issues"
   },
