@@ -130,9 +130,14 @@ export async function createThreeDsRespnse() {
       },
       customer,
       payment,
-      setupIntent
-
+      setupIntent,
+      ...createLoadResponse()
     },
+  }
+}
+
+export async function createLoadResponse() {
+  return {
     loadPayload: {
       action: 'load',
       gateway: 'stripe',

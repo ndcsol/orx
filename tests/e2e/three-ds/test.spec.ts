@@ -1,21 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { createThreeDsRespnse, deleteThreeDsResponse } from './stripe'
-
-function urlEncodeNestedObject(obj: any, prefix = "") {
-  let str: string[] = [];
-  for (let p in obj) {
-    if (obj.hasOwnProperty(p)) {
-      let k = prefix ? prefix + "[" + p + "]" : p,
-        v = obj[p];
-      str.push(
-        v !== null && typeof v === "object"
-          ? urlEncodeNestedObject(v, k)
-          : encodeURIComponent(k) + "=" + encodeURIComponent(v)
-      );
-    }
-  }
-  return str.join("&");
-}
+import { createThreeDsRespnse, deleteThreeDsResponse } from '../utils/stripe'
+import { urlEncodeNestedObject } from '../utils/url-encode-nested-object'
 
 test.describe.configure({
   mode: 'parallel'
