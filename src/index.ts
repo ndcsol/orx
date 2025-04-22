@@ -1,1 +1,1 @@
-export { threeDs } from './three-ds';
+export { load } from './load';

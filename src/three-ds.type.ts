@@ -6,12 +6,7 @@ export interface ThreeDsPayload {
   payload: {
     client_secret: string;
     payment_method: string;
-    publishable_key: string;
   };
-}
-
-export interface ThreeDsOptions {
-  locale?: 'en' | 'en-AU' | 'en-CA' | 'en-NZ' | 'en-GB' | 'fr' | 'fr-CA' | 'fr-FR';
 }
 
 export type ThreeDsResult = SetupIntentResult & {

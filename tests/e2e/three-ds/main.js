@@ -1,4 +1,4 @@
-import { threeDs } from "../../../src";
+import { load } from "../../../src";
 
 function urlParamsToObject() {
   let queryParams = {};
@@ -33,8 +33,9 @@ function createResultElement(id, content) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const threeDsPayload = urlParamsToObject();
-  threeDs(threeDsPayload).then(results => {
+  const { threeDsPayload, loadPayload } = urlParamsToObject();
+  const { instance } = await load(loadPayload)
+  instance.threeDs(threeDsPayload).then(results => {
     const parsedResponse = JSON.stringify(results, null, 2);
     if (results.status === 'success') {
       const successElement = createResultElement('success', parsedResponse);
