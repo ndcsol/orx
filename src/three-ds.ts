@@ -1,4 +1,4 @@
-import { loadStripe, RadarSessionPayload, type Stripe } from '@stripe/stripe-js';
+import { loadStripe, type RadarSessionPayload, type Stripe } from '@stripe/stripe-js';
 import type { ThreeDsOptions, ThreeDsPayload, ThreeDsResult } from './three-ds.type'
 
 export async function threeDs({ payload }: ThreeDsPayload, options?: ThreeDsOptions) {
