@@ -1,5 +1,5 @@
-import { loadStripe } from '@stripe/stripe-js';
-import type { ThreeDsOptions, ThreeDsPayload } from './three-ds.type'
+import { loadStripe, RadarSessionPayload, type Stripe } from '@stripe/stripe-js';
+import type { ThreeDsOptions, ThreeDsPayload, ThreeDsResult } from './three-ds.type'
 
 export async function threeDs({ payload }: ThreeDsPayload, options?: ThreeDsOptions) {
   const instance = await loadStripe(payload.publishable_key, {
@@ -14,31 +14,47 @@ export async function threeDs({ payload }: ThreeDsPayload, options?: ThreeDsOpti
     }
   }
 
-  return instance
-    .confirmCardSetup(payload.client_secret, {
-      payment_method: payload.payment_method
-    }).then((result) => {
+  return Promise.all([
+    instance
+      .confirmCardSetup(payload.client_secret, {
+        payment_method: payload.payment_method
+      }),
+    createRadarSession(instance)
+  ]).then(([result, session]: [ThreeDsResult, RadarSessionPayload]) => {
+    if (
+      result?.setupIntent?.status === 'succeeded' ||
+      result?.setupIntent?.status === 'requires_confirmation'
+    ) {
       if (
-        result?.setupIntent?.status === 'succeeded' ||
-        result?.setupIntent?.status === 'requires_confirmation'
+        session?.radarSession?.id
       ) {
-        return {
-          gateway: 'stripe',
-          payload: result,
-          status: 'success'
-        };
-      } else {
-        return {
-          gateway: 'stripe',
-          status: 'error',
-          message: result.error!.message,
-          error: result.error
-        };
+        result.session = session.radarSession.id;
       }
-    })
+      return {
+        gateway: 'stripe',
+        payload: result,
+        status: 'success'
+      };
+    } else {
+      return {
+        gateway: 'stripe',
+        status: 'error',
+        message: result.error!.message,
+        error: result.error
+      };
+    }
+  })
     .catch((error) => ({
       gateway: 'stripe',
       status: 'error',
       error
     }));
+}
+
+async function createRadarSession(instance: Stripe) {
+  try {
+    return await instance.createRadarSession()
+  } catch (e) {
+    return null;
+  }
 }

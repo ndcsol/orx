@@ -60,6 +60,7 @@ test.describe('Proper handling of the stripe modal', () => {
 
     expect(threeDsResult.status).toBe("success");
     expect(threeDsResult.payload.setupIntent.status).toBe("succeeded");
+    expect(threeDsResult.payload.session).toBeTruthy();
   });
 
   test("Stripe modal is triggered and fails successfully", async ({ page }) => {
@@ -88,6 +89,7 @@ test.describe('Proper handling of the stripe modal', () => {
     const threeDsResult = JSON.parse((await errorOrSuccessElement.textContent())!);
     expect(threeDsResult.gateway).toBe('stripe');
     expect(threeDsResult.status).toBe("error");
+    expect(threeDsResult?.payload?.session).toBeFalsy();
   });
 });
 
