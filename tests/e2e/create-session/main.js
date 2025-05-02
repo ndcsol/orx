@@ -10,16 +10,13 @@ function createResultElement(id, content) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const { threeDsPayload, loadPayload } = urlParamsToObject();
+  const { loadPayload, sessionPayload } = urlParamsToObject();
   const { instance } = await load(loadPayload)
-  instance.threeDs(threeDsPayload).then(results => {
+  instance.createSession(sessionPayload).then(results => {
     const parsedResponse = JSON.stringify(results, null, 2);
     if (results.status === 'success') {
       const successElement = createResultElement('success', parsedResponse);
       document.getElementsByTagName("body")[0].appendChild(successElement);
-    } else {
-      const errorElement = createResultElement('error', parsedResponse);
-      document.getElementsByTagName("body")[0].appendChild(errorElement);
     }
   }).catch((error) => {
     const parsedResponse = JSON.stringify(error, null, 2);

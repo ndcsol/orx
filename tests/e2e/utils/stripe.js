@@ -121,16 +121,30 @@ export async function createThreeDsRespnse() {
   const payment = await createPaymentMethod();
   const setupIntent = await createSetupIntent(customer, payment);
   return {
-    action: 'three_d_s',
-    gateway: 'stripe',
-    payload: {
-      client_secret: setupIntent.client_secret,
-      payment_method: setupIntent.payment_method,
-      publishable_key: process.env.STRIPE_PUBLISHABLE,
+    threeDsPayload: {
+      action: 'three_d_s',
+      gateway: 'stripe',
+      payload: {
+        client_secret: setupIntent.client_secret,
+        payment_method: setupIntent.payment_method,
+      },
+      customer,
+      payment,
+      setupIntent,
     },
-    customer,
-    payment,
-    setupIntent
+    ...createLoadResponse()
+  }
+}
+
+export function createLoadResponse() {
+  return {
+    loadPayload: {
+      action: 'load',
+      gateway: 'stripe',
+      payload: {
+        publishable_key: process.env.STRIPE_PUBLISHABLE,
+      }
+    }
   }
 }
 
