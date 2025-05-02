@@ -131,12 +131,12 @@ export async function createThreeDsRespnse() {
       customer,
       payment,
       setupIntent,
-      ...createLoadResponse()
     },
+    ...createLoadResponse()
   }
 }
 
-export async function createLoadResponse() {
+export function createLoadResponse() {
   return {
     loadPayload: {
       action: 'load',
