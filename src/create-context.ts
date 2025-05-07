@@ -1,6 +1,6 @@
 import type { Stripe } from '@stripe/stripe-js';
 
-export function createRadarSession(stripe: Stripe) {
+export function createContext(stripe: Stripe) {
   return async () => {
     const payload = await stripe.createRadarSession();
     return {

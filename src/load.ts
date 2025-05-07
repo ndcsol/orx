@@ -1,6 +1,6 @@
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
 import { threeDs } from './three-ds';
-import { createRadarSession } from './create-session';
+import { createContext } from './create-context';
 import type { LoadOptions, LoadPayload } from './load.type'
 
 export async function load({ payload }: LoadPayload, options?: LoadOptions) {
@@ -26,6 +26,6 @@ export async function load({ payload }: LoadPayload, options?: LoadOptions) {
 function createOrxInstance(stripe: Stripe) {
   return {
     threeDs: threeDs(stripe),
-    createSession: createRadarSession(stripe)
+    createContext: createContext(stripe)
   }
 }
