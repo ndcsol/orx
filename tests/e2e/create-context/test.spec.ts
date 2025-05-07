@@ -16,7 +16,7 @@ test.describe('Proper creation of Stripe Radar Session', () => {
 
   test("Stripe sessions are created successfully", async ({ page }) => {
     const payload = urlEncodeNestedObject(allPayloads);
-    await page.goto("http://localhost:5173/create-session/?" + payload);
+    await page.goto("http://localhost:5173/create-context/?" + payload);
     await page.waitForSelector("body");
 
     await page.waitForTimeout(1000);

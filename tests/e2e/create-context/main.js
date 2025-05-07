@@ -12,7 +12,7 @@ function createResultElement(id, content) {
 document.addEventListener("DOMContentLoaded", async () => {
   const { loadPayload, sessionPayload } = urlParamsToObject();
   const { instance } = await load(loadPayload)
-  instance.createSession(sessionPayload).then(results => {
+  instance.createContext(sessionPayload).then(results => {
     const parsedResponse = JSON.stringify(results, null, 2);
     if (results.status === 'success') {
       const successElement = createResultElement('success', parsedResponse);
